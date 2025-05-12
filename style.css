@@ -8,7 +8,8 @@
 /* —— body + fonts —— */
 body {
   font-family: "Montserrat", Arial, Helvetica, sans-serif;
-  color: #333;
+  color: #333; /* Revert text color */
+  background-color: #fff; /* Revert background color */
   display: flex;
   justify-content: center;
 }
@@ -86,7 +87,7 @@ body {
   width: 100%;
   text-align: center;
   padding: 40px;
-  color: #666;
+  color: #666; /* Revert text color */
   font-size: 18px;
 }
 
@@ -135,6 +136,44 @@ body {
   outline-offset: 2px;
 }
 
+/* Visually mark selected products */
+.product-card.selected {
+  border: 2px solid #000;
+  background-color: #f0f0f0;
+}
+
+/* Selected products section */
+.selected-product {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fafafa;
+}
+
+.selected-product img.selected-product-image {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.selected-product button.remove-btn {
+  background: #ff4d4d;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.selected-product button.remove-btn:hover {
+  background: #e60000;
+}
+
 /* visually hidden */
 .visually-hidden {
   position: absolute;
@@ -153,7 +192,7 @@ body {
   margin: 60px 0 40px;
   text-align: center;
   font-size: 14px;
-  color: #666;
+  color: #666; /* Revert text color */
 }
 
 .site-footer nav {
