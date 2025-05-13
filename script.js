@@ -18,9 +18,14 @@ productsContainer.innerHTML = `
 
 /* Load product data from JSON file */
 async function loadProducts() {
-  const response = await fetch("products.json");
-  const data = await response.json();
-  return data.products;
+  try {
+    const response = await fetch("products.json");
+    const data = await response.json();
+    return data.products;
+  } catch (error) {
+    console.error("Failed to load products:", error);
+    return [];
+  }
 }
 
 /* Create HTML for displaying product cards */
@@ -130,14 +135,24 @@ generateRoutineButton.addEventListener("click", async () => {
     return;
   }
 
+  // Display "Generating Routine" message
+  chatWindow.innerHTML += `
+    <div class="chat-message loading-message">
+      Generating Routine...
+    </div>
+  `;
+
   try {
-    const response = await fetch("https://loreal-worker.ttaylor-gross.workers.dev/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ products: selectedProductNames })
-    });
+    const response = await fetch(
+      "https://products-worker.ttaylor-gross.workers.dev/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ products: selectedProductNames }),
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -145,6 +160,7 @@ generateRoutineButton.addEventListener("click", async () => {
 
     const data = await response.json();
 
+    // Remove "Generating Routine" message and display the routine
     chatWindow.innerHTML = `
       <div class="chat-message bot-message">
         <strong>Your Routine:</strong><br>${data.routine}
@@ -152,6 +168,8 @@ generateRoutineButton.addEventListener("click", async () => {
     `;
   } catch (error) {
     console.error("Failed to generate routine:", error);
+
+    // Remove "Generating Routine" message and display an error
     chatWindow.innerHTML = `
       <div class="chat-message error-message">
         Failed to generate routine. Please try again later.
@@ -166,13 +184,16 @@ chatForm.addEventListener("submit", async (e) => {
   const userInput = e.target.elements["userInput"].value;
 
   try {
-    const response = await fetch("https://loreal-worker.ttaylor-gross.workers.dev/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ query: userInput })
-    });
+    const response = await fetch(
+      "https://products-worker.ttaylor-gross.workers.dev/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ query: userInput }),
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -182,7 +203,9 @@ chatForm.addEventListener("submit", async (e) => {
 
     chatWindow.innerHTML += `
       <div class="chat-message user-message">${userInput}</div>
-      <div class="chat-message bot-message">${data.routine || data.response}</div>
+      <div class="chat-message bot-message">${
+        data.routine || data.response
+      }</div>
     `;
   } catch (error) {
     console.error("Failed to fetch routine suggestions:", error);

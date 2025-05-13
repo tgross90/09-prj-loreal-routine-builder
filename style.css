@@ -8,7 +8,7 @@
 /* —— body + fonts —— */
 body {
   font-family: "Montserrat", Arial, Helvetica, sans-serif;
-  color: #333;
+  color: #000000;
   background-color: #e3a535; /* Set background to E3A535 */
   display: flex;
   justify-content: center;
@@ -50,13 +50,13 @@ body {
   border: 2px solid #000;
   border-radius: 8px;
   cursor: pointer;
-  background-color: white;
+  background-color: #E3A535;
   font-weight: 500;
 }
 
 .search-section select:focus {
   outline: none;
-  border-color: #666;
+  border-color: #000000;
 }
 
 /* chat section */
@@ -87,7 +87,7 @@ body {
   width: 100%;
   text-align: center;
   padding: 40px;
-  color: #666; /* Revert text color */
+  color: #000000; /* Revert text color */
   font-size: 18px;
 }
 
@@ -128,7 +128,7 @@ body {
 }
 
 .chat-form button:hover {
-  background: #666666;
+  background: #312f2f;
 }
 
 .chat-form button:focus {
@@ -139,7 +139,7 @@ body {
 /* Visually mark selected products */
 .product-card.selected {
   border: 2px solid #000;
-  background-color: #f0f0f0;
+  background-color: rgb(184, 141, 24);
 }
 
 /* Selected products section */
@@ -150,7 +150,7 @@ body {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  background-color: #fafafa;
+  background-color: rgb(184, 141, 24);
 }
 
 .selected-product img.selected-product-image {
@@ -192,7 +192,7 @@ body {
   margin: 60px 0 40px;
   text-align: center;
   font-size: 14px;
-  color: #666; /* Revert text color */
+  color: #000000; /* Revert text color */
 }
 
 .site-footer nav {
@@ -206,7 +206,7 @@ body {
 }
 
 .site-footer a:hover {
-  color: #666666;
+  color: #000000;
 }
 
 /* products grid */
@@ -219,7 +219,7 @@ body {
 
 .product-card {
   flex: 0 1 calc(33.333% - 14px);
-  border: 1px solid #ccc;
+  border: 1px solid #d3a31e;
   padding: 15px;
   border-radius: 4px;
   display: flex;
