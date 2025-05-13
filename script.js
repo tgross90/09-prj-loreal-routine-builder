@@ -39,7 +39,6 @@ function displayProducts(products) {
     )
     .join("");
 
-  // Add click event listeners to product cards
   const productCards = document.querySelectorAll(".product-card");
   productCards.forEach((card) => {
     card.addEventListener("click", () =>
@@ -51,7 +50,8 @@ function displayProducts(products) {
 /* Toggle product selection */
 function toggleProductSelection(card, products) {
   const productId = card.getAttribute("data-id");
-  const product = products.find((p) => p.id == productId); // use loose equality
+  const product = products.find((p) => p.id == productId);
+  if (!product) return;
 
   if (selectedProducts.has(product)) {
     selectedProducts.delete(product);
@@ -81,19 +81,17 @@ function updateSelectedProducts() {
       )
       .join("");
 
-    // Add click event listeners to remove buttons
     const removeButtons = document.querySelectorAll(".remove-btn");
     removeButtons.forEach((button) => {
       button.addEventListener("click", (e) => {
-        e.stopPropagation(); // Prevent the click from bubbling up to the card
+        e.stopPropagation();
         const productId = e.target.getAttribute("data-id");
         const product = Array.from(selectedProducts).find(
-          (p) => p.id === productId
+          (p) => p.id == productId
         );
         selectedProducts.delete(product);
         updateSelectedProducts();
 
-        // Unmark the product in the grid
         const productCard = document.querySelector(
           `.product-card[data-id="${productId}"]`
         );
@@ -110,8 +108,6 @@ categoryFilter.addEventListener("change", async (e) => {
   const products = await loadProducts();
   const selectedCategory = e.target.value;
 
-  /* filter() creates a new array containing only products 
-     where the category matches what the user selected */
   const filteredProducts = products.filter(
     (product) => product.category === selectedCategory
   );
@@ -121,7 +117,6 @@ categoryFilter.addEventListener("change", async (e) => {
 
 /* Generate routine when the button is clicked */
 generateRoutineButton.addEventListener("click", async () => {
-  // Convert selected products to an array of product names
   const selectedProductNames = Array.from(selectedProducts).map(
     (product) => product.name
   );
@@ -136,27 +131,20 @@ generateRoutineButton.addEventListener("click", async () => {
   }
 
   try {
-    // Send the selected products to the Cloudflare Worker API
-    const response = await fetch(
-      "https://loreal-worker.ttaylor-gross.workers.dev/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ products: selectedProductNames }),
-      }
-    );
+    const response = await fetch("https://loreal-worker.ttaylor-gross.workers.dev/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ products: selectedProductNames })
+    });
 
-    // Check if the response is successful
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    // Parse the JSON response
     const data = await response.json();
 
-    // Display the generated routine in the "Let's Build Your Routine" section
     chatWindow.innerHTML = `
       <div class="chat-message bot-message">
         <strong>Your Routine:</strong><br>${data.routine}
@@ -175,35 +163,26 @@ generateRoutineButton.addEventListener("click", async () => {
 /* Chat form submission handler - fetch routine suggestions from API */
 chatForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-
-  // Get the user's input from the chat form
   const userInput = e.target.elements["userInput"].value;
 
   try {
-    // Send the user's input to the API
-    const response = await fetch(
-      "https://loreal-worker.ttaylor-gross.workers.dev/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ query: userInput }),
-      }
-    );
+    const response = await fetch("https://loreal-worker.ttaylor-gross.workers.dev/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ query: userInput })
+    });
 
-    // Check if the response is successful
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    // Parse the JSON response
     const data = await response.json();
 
-    // Display the API's response in the chat window
     chatWindow.innerHTML += `
       <div class="chat-message user-message">${userInput}</div>
-      <div class="chat-message bot-message">${data.response}</div>
+      <div class="chat-message bot-message">${data.routine || data.response}</div>
     `;
   } catch (error) {
     console.error("Failed to fetch routine suggestions:", error);
@@ -214,6 +193,5 @@ chatForm.addEventListener("submit", async (e) => {
     `;
   }
 
-  // Clear the chat form input
   e.target.reset();
 });

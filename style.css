@@ -8,8 +8,8 @@
 /* —— body + fonts —— */
 body {
   font-family: "Montserrat", Arial, Helvetica, sans-serif;
-  color: #333; /* Revert text color */
-  background-color: #fff; /* Revert background color */
+  color: #333;
+  background-color: #e3a535; /* Set background to E3A535 */
   display: flex;
   justify-content: center;
 }
@@ -78,7 +78,7 @@ body {
   line-height: 1.5;
   height: 250px;
   overflow-y: auto;
-  background: #fafafa;
+  background: #e3a535;
   margin-bottom: 20px;
 }
 
@@ -278,7 +278,7 @@ body {
   font-size: 18px;
   font-weight: 500;
   color: #fff;
-  background: #000;
+  background: #ff003b; /* Set background to ff003b */
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -286,7 +286,7 @@ body {
 }
 
 .generate-btn:hover {
-  background: #666;
+  background: #cc0030; /* Darker shade on hover */
 }
 
 .generate-btn i {
